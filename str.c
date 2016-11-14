@@ -177,15 +177,10 @@ String *strReadString()
 {
 	int c, velikost = 1, delka = 0;
 	
-    String *s = memory_manager_malloc(sizeof(String));
+   	String *s = memory_manager_malloc(sizeof(String));
 	char* buffer = (char*) memory_manager_malloc(sizeof(char));
-	
-	if(buffer == NULL)
-	{
-		free(s);
-		return NULL;
-	}
-    while(1)
+
+    	while(1)
 	{
 		c = getchar();
 		
@@ -197,12 +192,12 @@ String *strReadString()
 
 		if(c == '\n' || c == EOF)
 		{
-			    buffer[delka] = '\0';
-			    break;
+			buffer[delka] = '\0';
+			break;
 		}
 
-    	buffer[delka] = c;
-        delka++;
+    		buffer[delka] = c;
+        	delka++;
 	}
 
     	s->length = delka;
@@ -211,6 +206,7 @@ String *strReadString()
 
 	return s;
 }
+
 
 
 /*
