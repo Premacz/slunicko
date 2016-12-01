@@ -116,33 +116,36 @@ double strReadDouble()
     while(1)
     {
         c = getchar();
-
+    
         if(velikost == delka)
         {
             velikost *= 2;
             buffer = (char*) memory_manager_realloc(buffer, sizeof(char) * velikost);
         }
-
+        
         if(c == '\n' || c == EOF){
-            buffer[delka] = '\0';
+            buffer[delka] = '\0';       
             break;
         }
-
+        
         if (isdigit(c))
         {
             buffer[delka] = c;
-            pom = 1;
+            if(dot_pom == 1){
+            dot_pom = 2;
+            }
         }
-        else if(c == 46 && dot_pom == 0) // 46 - tečka
+        else if(pom != 2 && (c == 46 && dot_pom == 0)) // 46 - teÄka
         {
             buffer[delka] = c;
             dot_pom = 1;
         }
-        else if(pom == 1 && (c == 69 || c == 101)){ // E - 69 , e - 101
+       else if(((c == 69 || c == 101) && dot_pom != 1) && pom != 2){ // E - 69 , e - 101
+                
             buffer[delka] = c;
             pom = 2;
         }
-        else if (pom == 2 &&  ((buffer[delka - 1] == 69 || buffer[delka - 1] == 101) && (c == 43 || c == 45))){ // 43 - plus , 45 - mínus
+        else if (dot_pom != 1 && (pom == 2 &&  ((buffer[delka - 1] == 69 || buffer[delka - 1] == 101) && (c == 43 || c == 45)))){ // 43 - plus , 45 - mĂ­nus
             buffer[delka] = c;
         }
         else
@@ -151,16 +154,16 @@ double strReadDouble()
         }
         delka++;
     }
-
+    
     if(delka == 0)
 	{
 		error_f(ERROR_INPUT);
 	}
-
+    
     sscanf(buffer, "%lf", &cislo);
     memory_manager_free_one(buffer);
     buffer = NULL;
-
+    
     if(cislo >= DBL_MAX)
     {
         error_f(ERROR_INPUT);
@@ -168,7 +171,6 @@ double strReadDouble()
 
     return (double)cislo;
 }
-
 /*
  * Nacte String ze stdin
  */
